@@ -19,7 +19,9 @@ echo "Starting build..." > logfile
 go run .github/workflows/wait_workers.go |& tee -a logfile
 
 # start build
-makepkg --syncdeps --noconfirm |& tee -a logfile
+export DISTCC_VERBOSE=1
+export DISTCC_DIR=/tmp/distcc
+pump makepkg --nodeps |& tee -a logfile
 
 # terminate workers
 go run .github/workflows/end_workers.go |& tee -a logfile
